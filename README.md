@@ -18,23 +18,23 @@ cd csc-436-project
 
 **2. Install Dependencies**
 Run the following command to install the required packages (Vite and Supabase):
-\`\`\`bash
+```bash
 npm install
-\`\`\`
+```
 
 **3. Environment Variables (Supabase)**
 **NOTE: We dont not have API keys yet, ignore this step**
 
 Create a file named `.env` in the root of the project directory. 
 Ask Nathan for the Supabase API keys, and add them to the file exactly like this:
-\`\`\`env
+```env
 VITE_SUPABASE_URL=your_supabase_project_url
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-\`\`\`
+```
 
 **4. Start the Development Server**
 Boot up the local Vite server:
-\`\`\`bash
+```bash
 npm run dev
-\`\`\`
+```
 Open your browser and navigate to `http://localhost:5173` to view the app
