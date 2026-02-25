@@ -12,7 +12,7 @@ Before you begin, ensure you have the following installed:
 **1. Clone the repository**
 Open your terminal and clone this project to your local machine:
 ```bash
-git clone https://github.com/yourusername/csc-436-project.git
+git clone https://github.com/NathanK29/csc-436-timer-project.git
 cd csc-436-project
 ```
 
