@@ -24,7 +24,7 @@ npm install
 
 **3. Environment Variables (Supabase)**
 
-### NOTE: We dont not have API keys yet, ignore this step
+#### NOTE: We do NOT have the API keys yet, ignore this step for now.
 
 Create a file named `.env` in the root of the project directory. 
 Ask Nathan for the Supabase API keys, and add them to the file exactly like this:
