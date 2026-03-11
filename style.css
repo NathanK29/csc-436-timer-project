@@ -1,0 +1,93 @@
+body {
+    background-color: #ECF9F8;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    margin: 0;
+}
+
+.container {
+    width: 500px;
+    height: 500px;
+    margin-left: 450px;
+    margin-top: 50px;
+    padding-top: 50px;
+}
+
+#timer {
+    font-size: 80px;
+    text-align: center;
+
+    margin-bottom: 20px;
+    margin-top: -20px;
+
+    font-family: tahoma, sans-serif;
+    font-size: 90px;
+    color: #1F8A8A;
+    text-shadow:
+        1px 1px 0 #ccc,
+        2px 2px 0 #bbb,
+        3px 3px 0 #999;    
+}
+
+
+#start {
+    margin-left: 80px;
+
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+
+    background: linear-gradient(#5EC690, #3E9B69);
+    color: white;
+    box-shadow: 0px 6px 0px #2e7a52;
+}
+
+#pause {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+
+    background: linear-gradient(#F7D56B, #F4C542);
+    color: #333;
+    box-shadow: 0px 6px 0px #d1a935;
+}
+
+#restart {
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+
+    background: linear-gradient(#F7A35B, #F28C38);
+    color: white;
+    box-shadow: 0px 6px 0px #d96f1e;
+}
+
+button {
+    color: white;
+
+    padding: 16px 50px;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    margin: 12px;
+    transition: all 0.2s ease;
+}
+
+button:active {
+    transform: translateY(2px);
+}
+
+#timer_picture {
+    margin-left: 550px;
+    margin-top: 150px;
+    margin-bottom: -121px;
+}
+
+#logo {
+    margin-left: 100px;
+    margin-bottom: 20px;
+}
