@@ -90,3 +90,8 @@ function update() {
     display.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 }
 
+const colorSelect = document.getElementById("colorSelect");
+
+colorSelect.addEventListener("change", function () {
+    document.body.style.backgroundColor = this.value;
+});

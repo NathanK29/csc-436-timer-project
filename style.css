@@ -8,10 +8,7 @@ body {
     width: 500px;
     height: 100%;
 
-    margin-top: 50px;
-    margin-bottom: 0;
-    margin-right: auto;
-    margin-left: auto;
+    margin: 50px auto 0 auto;
 
     padding-top: 50px;
 }
@@ -87,14 +84,59 @@ button:active {
 
 #timer_picture {
     display: block;
-    
-    margin-top: 12vh;
-    margin-bottom: -121px;
-    margin-right: auto;
-    margin-left: auto;
+    margin: 3vh auto -121px auto;
 }
 
 #logo {
     margin-left: 100px;
     margin-bottom: 20px;
+}
+
+
+.mode_tabs {
+    display: flex;
+    justify-content: center;
+
+    margin-top: 50px;
+    margin-bottom: 1px;
+}
+
+
+.mode_tabs button {
+    border: 0.5px solid lightgrey;
+    border-radius: 1px;
+
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 20px;
+    padding-right: 20px;
+    
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.15);
+}
+
+
+#focus_button {
+    background-color: green;
+    color: #f7f2e9;
+    
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    margin-right: 0;
+}
+
+
+#short_button {
+    background-color: #f7f2e9;
+    color: green;
+
+    margin-right: 0;
+    margin-left: 0;
+}
+
+
+#long_button {
+    background-color: #fbf0bd;
+    color: #815538;
+    margin-left: 0px;
 }
