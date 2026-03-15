@@ -6,56 +6,56 @@ let isRunning = false;
 let duration = 0;
 let remainingTime = 0;
 
-function handleStart() {
-    if (remainingTime > 0) {
-        const setNew = confirm("Set a new timer?");
-        if (setNew) {
-            askTime();
-        } else {
-            start(remainingTime / 1000);
-        }
-    } else {
-        askTime();
-    }
+function updateDisplay(ms) {
+    const totalSeconds = Math.ceil(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+
+    display.textContent =
+        String(minutes).padStart(2, "0") + ":" +
+        String(seconds).padStart(2, "0");
 }
 
-function askTime(){
-    const input = prompt("Enter timer length in minutes:", "15");
-    if (input === null){
-        return;
-    }
-
-    const minutes = Number(input);
-
-    if (isNaN(minutes) || minutes <= 0){
-        alert("Please enter a valid number");
-        return;
-    }
+function setFocus() {
     clearInterval(timer);
+    timer = null;
     isRunning = false;
-    duration = minutes * 60 * 1000;
-    remainingTime = duration;
 
-    start(minutes * 60);
+    duration = 25 * 60 * 1000;
+    remainingTime = duration;
+    updateDisplay(remainingTime);
 }
 
-function start(time) {
-    if (isRunning){
-        return;
-    }
+function setShortBreak() {
+    clearInterval(timer);
+    timer = null;
+    isRunning = false;
 
-    if (remainingTime === 0){
-        duration = time * 1000;
-        remainingTime = duration;
-    }
+    duration = 5 * 60 * 1000;
+    remainingTime = duration;
+    updateDisplay(remainingTime);
+}
 
+function setLongBreak() {
+    clearInterval(timer);
+    timer = null;
+    isRunning = false;
+
+    duration = 15 * 60 * 1000;
+    remainingTime = duration;
+    updateDisplay(remainingTime);
+}
+
+function start() {
+    if (isRunning) return;
+
+    isRunning = true;
     startTime = Date.now();
     endTime = startTime + remainingTime;
-    timer = setInterval(update, 10);
-    isRunning = true;
 
-
+    timer = setInterval(update, 100);
 }
+
 
 function pause() {
     if (!isRunning){
