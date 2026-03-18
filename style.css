@@ -1,3 +1,30 @@
+.user-bar {
+    position: fixed;
+    top: 12px;
+    right: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 100;
+}
+
+#user-email {
+    font-size: 13px;
+    color: #555;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+#signout-btn {
+    padding: 5px 14px !important;
+    font-size: 12px !important;
+    font-weight: bold;
+    border-radius: 20px;
+    margin: 0;
+    background: linear-gradient(#e57373, #c0392b);
+    color: white;
+    box-shadow: 0px 3px 0px #922b21;
+}
+
 body {
     background-color: #ECF9F8;
     font-family: Georgia, 'Times New Roman', Times, serif;
