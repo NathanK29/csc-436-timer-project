@@ -205,7 +205,6 @@ saveSettings.addEventListener("click", function () {
     if (shortBreak > 0) shortBreakDuration = shortBreak * 60 * 1000;
     if (longBreak > 0) longBreakDuration = longBreak * 60 * 1000;
 
-    // Refresh current mode's display if not running
     if (!isRunning) {
         if (currentMode === 'focus') setFocus();
         else if (currentMode === 'shortBreak') setShortBreak();
