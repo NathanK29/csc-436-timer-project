@@ -10,6 +10,8 @@
     <body style="display:none">
         <script type="module">
             import { supabase } from './supabase.js'
+            import { startSession, addFocusMinute, endSession, endSessionSync } from './session.js'
+
             const { data: { session } } = await supabase.auth.getSession()
             if (!session) {
                 window.location.replace('login.html')
@@ -17,7 +19,17 @@
                 document.body.style.display = ''
                 document.getElementById('user-email').textContent = session.user.email
 
+                // Start tracking this login as a session
+                await startSession(session.user.id, session.access_token)
+
+                // Timer.js calls this each time a focus minute completes
+                window.onFocusMinuteCompleted = addFocusMinute
+
+                // End session on tab close
+                window.addEventListener('beforeunload', () => endSessionSync())
+
                 document.getElementById('signout-btn').addEventListener('click', async () => {
+                    await endSession()
                     await supabase.auth.signOut()
                     window.location.replace('login.html')
                 })
