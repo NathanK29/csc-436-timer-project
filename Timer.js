@@ -90,8 +90,47 @@ function update() {
     display.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 }
 
-const colorSelect = document.getElementById("colorSelect");
+const settingsButton = document.getElementById("settingsButton");
+const settingsMenu = document.getElementById("settingsMenu");
 
-colorSelect.addEventListener("change", function () {
-    document.body.style.backgroundColor = this.value;
+settingsButton.addEventListener("click", function (event) {
+    event.stopPropagation();
+    settingsMenu.classList.toggle("hidden");
+});
+
+settingsMenu.addEventListener("click", function (event) {
+    event.stopPropagation();
+});
+
+document.addEventListener("click", function () {
+    settingsMenu.classList.add("hidden");
+});
+
+const saveSettings = document.getElementById("saveSettings");
+
+saveSettings.addEventListener("click", function () {
+
+    const pomodoro = Number(document.getElementById("pomodoroInput").value);
+
+    const backgroundColor = document.getElementById("backgroundColorInput").value;
+    const textColor = document.getElementById("textColorInput").value;
+
+    // change colors
+    if (backgroundColor) {
+        document.body.style.backgroundColor = backgroundColor;
+    }
+
+    if (textColor) {
+        display.style.color = textColor;
+    }
+
+    // update timer
+    if (!isRunning && pomodoro > 0) {
+        duration = pomodoro * 60 * 1000;
+        remainingTime = duration;
+        display.textContent = `${String(pomodoro).padStart(2,"0")}:00`;
+    }
+
+    settingsMenu.classList.add("hidden");
+
 });
