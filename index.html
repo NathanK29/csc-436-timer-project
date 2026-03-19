@@ -21,6 +21,17 @@
                     await supabase.auth.signOut()
                     window.location.replace('login.html')
                 })
+
+                // Wire up timer buttons (Timer.js functions may not be global in Vite module context)
+                document.getElementById('focus_button').addEventListener('click', () => setFocus())
+                document.getElementById('short_button').addEventListener('click', () => setShortBreak())
+                document.getElementById('long_button').addEventListener('click', () => setLongBreak())
+                document.getElementById('start').addEventListener('click', () => start())
+                document.getElementById('pause').addEventListener('click', () => pause())
+                document.getElementById('restart').addEventListener('click', () => restart())
+
+                // Sync JS state with the 25:00 shown in the HTML on load
+                setFocus()
             }
         </script>
 
@@ -42,9 +53,9 @@
         </div>
 
         <div class="mode_tabs">
-            <button id="focus_button" onclick="setFocus()">Focus</button>
-            <button id="short_button" onclick="setShortBreak()">Short Break</button>
-            <button id="long_button" onclick="setLongBreak()">Long Break</button>
+            <button id="focus_button">Focus</button>
+            <button id="short_button">Short Break</button>
+            <button id="long_button">Long Break</button>
         </div>
 
         <img src="timer.png" id="timer_picture" width="300px">
@@ -54,9 +65,9 @@
             <img src="logo.png" id="logo" width="300px">
             <div id="timer">25:00</div>
 
-            <button id="start" onclick="start()">Start</button>
-            <button id="pause" onclick="pause()">Pause</button>
-            <button id="restart" onclick="restart()">Restart</button>
+            <button id="start">Start</button>
+            <button id="pause">Pause</button>
+            <button id="restart">Restart</button>
         </div>
 
         <script src="Timer.js"></script>
