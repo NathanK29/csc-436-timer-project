@@ -22,7 +22,6 @@
                     window.location.replace('login.html')
                 })
 
-                // Wire up timer buttons (Timer.js functions may not be global in Vite module context)
                 document.getElementById('focus_button').addEventListener('click', () => setFocus())
                 document.getElementById('short_button').addEventListener('click', () => setShortBreak())
                 document.getElementById('long_button').addEventListener('click', () => setLongBreak())
@@ -30,7 +29,6 @@
                 document.getElementById('pause').addEventListener('click', () => pause())
                 document.getElementById('restart').addEventListener('click', () => restart())
 
-                // Sync JS state with the 25:00 shown in the HTML on load
                 setFocus()
             }
         </script>
