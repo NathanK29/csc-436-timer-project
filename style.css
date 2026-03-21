@@ -311,8 +311,6 @@ button:active {
     box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
 }
 
-/* ── Task Section ─────────────────────────────── */
-
 .task-section {
     width: 500px;
     margin: 30px auto 60px auto;
@@ -437,8 +435,6 @@ button:active {
     font-size: 14px;
     padding: 24px 0;
 }
-
-/* ── Modal ────────────────────────────────────── */
 
 .modal-overlay {
     position: fixed;

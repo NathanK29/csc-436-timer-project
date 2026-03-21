@@ -20,13 +20,10 @@
                 document.body.style.display = ''
                 document.getElementById('user-email').textContent = session.user.email
 
-                // Start tracking this login as a session
                 await startSession(session.user.id, session.access_token)
 
-                // Timer.js calls this each time a focus minute completes
                 window.onFocusMinuteCompleted = addFocusMinute
 
-                // End session on tab close
                 window.addEventListener('beforeunload', () => endSessionSync())
 
                 document.getElementById('signout-btn').addEventListener('click', async () => {
@@ -108,7 +105,6 @@
 
         <script src="Timer.js"></script>
 
-        <!-- Task Section -->
         <div class="task-section">
             <div class="task-header">
                 <h2 class="task-heading">My Tasks</h2>
@@ -117,7 +113,6 @@
             <div id="task-list"></div>
         </div>
 
-        <!-- Delete Confirmation Modal -->
         <div id="confirm-overlay" class="modal-overlay hidden">
             <div class="modal confirm-modal">
                 <div class="confirm-icon">🗑️</div>
@@ -130,7 +125,6 @@
             </div>
         </div>
 
-        <!-- Add/Edit Modal -->
         <div id="task-modal-overlay" class="modal-overlay hidden">
             <div class="modal">
                 <h3 id="modal-title">New Task</h3>

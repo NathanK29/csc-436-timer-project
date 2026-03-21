@@ -135,7 +135,6 @@ function update() {
         }
         display.textContent = "00:00";
 
-        // Auto-advance to next Pomodoro stage
         if (currentMode === 'focus') {
             focusCount++;
             if (focusCount % 4 === 0) {
