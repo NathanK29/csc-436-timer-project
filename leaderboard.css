@@ -1,0 +1,88 @@
+.lb-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    min-height: 100vh;
+}
+
+.lb-back {
+    align-self: flex-start;
+    margin-left: calc(50% - 300px);
+    margin-bottom: 24px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 15px;
+    color: #815538;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.lb-back:hover {
+    text-decoration: underline;
+}
+
+.lb-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    padding: 36px 40px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.lb-card h1 {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: #815538;
+    margin: 0 0 6px 0;
+    font-size: 28px;
+    text-align: center;
+}
+
+.lb-subtitle {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+    margin: 0 0 28px 0;
+}
+
+.lb-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 8px;
+    border-bottom: 1px solid #f0e8d5;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.lb-row:last-child {
+    border-bottom: none;
+}
+
+.lb-rank {
+    width: 40px;
+    font-size: 22px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.lb-date {
+    flex: 1;
+    font-size: 15px;
+    color: #555;
+}
+
+.lb-mins {
+    font-size: 16px;
+    font-weight: bold;
+    color: #3E9B69;
+    white-space: nowrap;
+}
+
+.lb-empty {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 14px;
+    color: #888;
+    text-align: center;
+    margin: 24px 0;
+}

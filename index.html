@@ -11,6 +11,7 @@
         <script type="module">
             import { supabase } from './supabase.js'
             import { startSession, addFocusMinute, endSession, endSessionSync } from './session.js'
+            import { initTasks } from './tasks.js'
 
             const { data: { session } } = await supabase.auth.getSession()
             if (!session) {
@@ -34,6 +35,10 @@
                     window.location.replace('login.html')
                 })
 
+                document.getElementById('leaderboardButton').addEventListener('click', () => {
+                    window.location.href = 'leaderboard.html'
+                })
+
                 document.getElementById('focus_button').addEventListener('click', () => setFocus())
                 document.getElementById('short_button').addEventListener('click', () => setShortBreak())
                 document.getElementById('long_button').addEventListener('click', () => setLongBreak())
@@ -42,6 +47,7 @@
                 document.getElementById('restart').addEventListener('click', () => restart())
 
                 setFocus()
+                initTasks(session.user.id)
             }
         </script>
 
@@ -50,30 +56,36 @@
             <button id="signout-btn">Sign Out</button>
         </div>
 
-        <div class="settings-dropdown">
-            <button id="settingsButton">⚙ Settings</button>
-        
-            <div id="settingsMenu" class="dropdown-menu hidden">
-                <h3>Timer Settings</h3>
-        
-                <label for="pomodoroInput">Focus</label>
-                <input type="number" id="pomodoroInput" value="25">
-        
-                <label for="shortBreakInput">Short Break</label>
-                <input type="number" id="shortBreakInput" value="5">
-        
-                <label for="longBreakInput">Long Break</label>
-                <input type="number" id="longBreakInput" value="15">
-        
-                <h3>Theme</h3>
-        
-                <label for="backgroundColorInput">Background Color</label>
-                <input type="color" id="backgroundColorInput" value="#ECF9F8">
-        
-                <label for="textColorInput">Text Color</label>
-                <input type="color" id="textColorInput" value="#1F8A8A">
-        
-                <button id="saveSettings">Save</button>
+        <div class="controls-bar">
+            <div class="settings-dropdown">
+                <button id="settingsButton">⚙ Settings</button>
+
+                <div id="settingsMenu" class="dropdown-menu hidden">
+                    <h3>Timer Settings</h3>
+
+                    <label for="pomodoroInput">Focus</label>
+                    <input type="number" id="pomodoroInput" value="25">
+
+                    <label for="shortBreakInput">Short Break</label>
+                    <input type="number" id="shortBreakInput" value="5">
+
+                    <label for="longBreakInput">Long Break</label>
+                    <input type="number" id="longBreakInput" value="15">
+
+                    <h3>Theme</h3>
+
+                    <label for="backgroundColorInput">Background Color</label>
+                    <input type="color" id="backgroundColorInput" value="#ECF9F8">
+
+                    <label for="textColorInput">Text Color</label>
+                    <input type="color" id="textColorInput" value="#1F8A8A">
+
+                    <button id="saveSettings">Save</button>
+                </div>
+            </div>
+
+            <div>
+                <button id="leaderboardButton">🏆 Top Sessions</button>
             </div>
         </div>
 
@@ -86,7 +98,6 @@
         <img src="timer.png" id="timer_picture" width="300px">
 
         <div class="container">
-            
             <img src="logo.png" id="logo" width="300px">
             <div id="timer">25:00</div>
 
@@ -96,6 +107,45 @@
         </div>
 
         <script src="Timer.js"></script>
+
+        <!-- Task Section -->
+        <div class="task-section">
+            <div class="task-header">
+                <h2 class="task-heading">My Tasks</h2>
+                <button id="add-task-btn" class="add-task-btn">+ Add Task</button>
+            </div>
+            <div id="task-list"></div>
+        </div>
+
+        <!-- Delete Confirmation Modal -->
+        <div id="confirm-overlay" class="modal-overlay hidden">
+            <div class="modal confirm-modal">
+                <div class="confirm-icon">🗑️</div>
+                <h3 class="confirm-title">Delete Task</h3>
+                <p class="confirm-text">This action cannot be undone.</p>
+                <div class="confirm-actions">
+                    <button id="confirm-cancel" class="modal-btn cancel">Keep It</button>
+                    <button id="confirm-delete" class="modal-btn delete">Yes, Delete</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add/Edit Modal -->
+        <div id="task-modal-overlay" class="modal-overlay hidden">
+            <div class="modal">
+                <h3 id="modal-title">New Task</h3>
+                <form id="task-form">
+                    <label for="task-title-input">Title</label>
+                    <input type="text" id="task-title-input" placeholder="Task title" required>
+                    <label for="task-body-input">Notes (optional)</label>
+                    <textarea id="task-body-input" placeholder="Add any notes..." rows="3"></textarea>
+                    <div class="modal-actions">
+                        <button type="button" id="modal-cancel" class="modal-btn cancel">Cancel</button>
+                        <button type="submit" class="modal-btn save">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
     </body>
 

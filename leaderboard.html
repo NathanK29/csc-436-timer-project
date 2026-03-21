@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Top Sessions</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="leaderboard.css">
+    </head>
+
+    <body style="display:none">
+        <script type="module">
+            import { supabase } from './supabase.js'
+
+            const { data: { session } } = await supabase.auth.getSession()
+            if (!session) {
+                window.location.replace('login.html')
+            } else {
+                document.body.style.display = ''
+
+                const { data, error } = await supabase
+                    .from('user_sessions')
+                    .select('session_start, session_length')
+                    .eq('user_id', session.user.id)
+                    .gt('session_length', 0)
+                    .order('session_length', { ascending: false })
+                    .limit(10)
+
+                const list = document.getElementById('leaderboard-list')
+
+                if (error || !data || data.length === 0) {
+                    list.innerHTML = '<p class="lb-empty">No sessions yet. Complete a focus session to see your stats!</p>'
+                } else {
+                    const medals = ['🥇', '🥈', '🥉']
+                    list.innerHTML = data.map((s, i) => {
+                        const date = new Date(s.session_start).toLocaleDateString('en-US', {
+                            weekday: 'short', month: 'short', day: 'numeric', year: 'numeric'
+                        })
+                        const rank = medals[i] ?? `#${i + 1}`
+                        const hrs = Math.floor(s.session_length / 60)
+                        const mins = s.session_length % 60
+                        const duration = hrs > 0 ? `${hrs}h ${mins}m` : `${mins} min`
+                        return `
+                            <div class="lb-row">
+                                <span class="lb-rank">${rank}</span>
+                                <span class="lb-date">${date}</span>
+                                <span class="lb-mins">${duration}</span>
+                            </div>
+                        `
+                    }).join('')
+                }
+            }
+        </script>
+
+        <div class="lb-page">
+            <a href="index.html" class="lb-back">← Back to Timer</a>
+
+            <div class="lb-card">
+                <h1>🏆 My Top Sessions</h1>
+                <p class="lb-subtitle">Your 10 best focus sessions, ranked by total minutes.</p>
+                <div id="leaderboard-list">
+                    <p class="lb-empty">Loading...</p>
+                </div>
+            </div>
+        </div>
+
+    </body>
+
+</html>
