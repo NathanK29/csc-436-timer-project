@@ -18,6 +18,13 @@
             } else {
                 document.body.style.display = ''
 
+                const savedBg = localStorage.getItem('bgColor')
+                const savedTextColor = localStorage.getItem('textColor')
+                if (savedBg) document.body.style.backgroundColor = savedBg
+                if (savedTextColor) {
+                    document.querySelector('.lb-back').style.color = savedTextColor
+                }
+
                 const { data, error } = await supabase
                     .from('user_sessions')
                     .select('session_start, session_length')

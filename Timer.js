@@ -194,10 +194,13 @@ saveSettings.addEventListener("click", function () {
 
     if (backgroundColor) {
         document.body.style.backgroundColor = backgroundColor;
+        localStorage.setItem('bgColor', backgroundColor);
     }
 
     if (textColor) {
         display.style.color = textColor;
+        document.querySelector('.task-heading').style.color = textColor;
+        localStorage.setItem('textColor', textColor);
     }
 
     if (pomodoro > 0) focusDuration = pomodoro * 60 * 1000;

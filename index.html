@@ -20,6 +20,18 @@
                 document.body.style.display = ''
                 document.getElementById('user-email').textContent = session.user.email
 
+                const savedBg = localStorage.getItem('bgColor')
+                const savedTextColor = localStorage.getItem('textColor')
+                if (savedBg) {
+                    document.body.style.backgroundColor = savedBg
+                    document.getElementById('backgroundColorInput').value = savedBg
+                }
+                if (savedTextColor) {
+                    document.getElementById('timer').style.color = savedTextColor
+                    document.querySelector('.task-heading').style.color = savedTextColor
+                    document.getElementById('textColorInput').value = savedTextColor
+                }
+
                 await startSession(session.user.id, session.access_token)
 
                 window.onFocusMinuteCompleted = addFocusMinute
