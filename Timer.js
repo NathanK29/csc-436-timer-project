@@ -135,6 +135,14 @@ function update() {
         }
         display.textContent = "00:00";
 
+        const originalBg = document.body.style.backgroundColor || '';
+        document.body.style.backgroundColor = 'red';
+        playAlarm();
+        setTimeout(() => {
+            const savedBg = localStorage.getItem('bgColor');
+            document.body.style.backgroundColor = savedBg || originalBg;
+        }, 3000);
+
         if (currentMode === 'focus') {
             focusCount++;
             if (focusCount % 4 === 0) {
@@ -163,6 +171,30 @@ function update() {
     let minutes = Math.floor((remaining / (1000 * 60)));
     let seconds = Math.floor((remaining / 1000) % 60);
     display.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+}
+
+function playAlarm() {
+    const sound = new (window.AudioContext || window.webkitAudioContext)();
+    const beepCount = 4;
+    const beepDuration = 0.15;
+    const pauseDuration = 0.15;
+
+    for (let i = 0; i < beepCount; i++) {
+        const startAt = i * (beepDuration + pauseDuration);
+
+        const oscillator = sound.createOscillator();
+        const gainNode = sound.createGain();
+
+        oscillator.type = 'sine';
+        oscillator.frequency.value = 880;
+        gainNode.gain.value = 0.5;
+
+        oscillator.connect(gainNode);
+        gainNode.connect(sound.destination);
+
+        oscillator.start(sound.currentTime + startAt);
+        oscillator.stop(sound.currentTime + startAt + beepDuration);
+    }
 }
 
 const settingsButton = document.getElementById("settingsButton");
