@@ -12,6 +12,7 @@
             import { supabase } from './supabase.js'
             import { startSession, addFocusMinute, endSession, endSessionSync } from './session.js'
             import { initTasks } from './tasks.js'
+            import { initXP, awardFocusMinuteXP, getXpProgress, getLevelTitle } from './xp.js'
 
             const { data: { session } } = await supabase.auth.getSession()
             if (!session) {
@@ -34,7 +35,37 @@
 
                 await startSession(session.user.id, session.access_token)
 
-                window.onFocusMinuteCompleted = addFocusMinute
+                function updateXPDisplay(progress) {
+                    document.getElementById('xp-level').textContent = progress.level
+                    document.getElementById('xp-title').textContent = getLevelTitle(progress.level)
+                    document.getElementById('xp-bar-fill').style.width = progress.progressPct + '%'
+                    document.getElementById('xp-text').textContent =
+                        `${progress.xpIntoLevel} / ${progress.xpNeeded} XP`
+                }
+
+                await initXP(session.user.id, updateXPDisplay)
+                window.onFocusMinuteCompleted = () => {
+                    console.log('>>> Focus minute completed! Awarding XP...')
+                    addFocusMinute()
+                    awardFocusMinuteXP().then(newLevel => {
+                        console.log('>>> XP awarded. Level up?', newLevel)
+                        if (newLevel) showLevelUpToast(newLevel)
+                    }).catch(err => console.error('XP error:', err))
+                }
+
+                function showLevelUpToast(level) {
+                    const toast = document.getElementById('levelup-toast')
+                    document.getElementById('levelup-level').textContent = level
+                    document.getElementById('levelup-title').textContent = getLevelTitle(level)
+                    toast.classList.remove('hidden')
+                    toast.classList.add('show')
+                    setTimeout(() => {
+                        toast.classList.remove('show')
+                        toast.classList.add('hidden')
+                    }, 3500)
+                }
+
+
 
                 window.addEventListener('beforeunload', () => endSessionSync())
 
@@ -114,6 +145,33 @@
             <button id="pause">Pause</button>
             <button id="restart">Restart</button>
         </div>
+
+        <div class="xp-widget">
+            <div class="xp-level-badge">
+                <span class="xp-level-label">LV</span>
+                <span id="xp-level">1</span>
+            </div>
+            <div class="xp-info">
+                <div class="xp-title-row">
+                    <span id="xp-title" class="xp-rank-title">Newbie</span>
+                    <span id="xp-text" class="xp-numbers">0 / 100 XP</span>
+                </div>
+                <div class="xp-bar">
+                    <div id="xp-bar-fill" class="xp-bar-fill" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="levelup-toast" class="levelup-toast hidden">
+            <div class="levelup-inner">
+                <span class="levelup-star">⭐</span>
+                <div>
+                    <div class="levelup-headline">Level Up!</div>
+                    <div class="levelup-detail">Level <span id="levelup-level"></span> — <span id="levelup-title"></span></div>
+                </div>
+            </div>
+        </div>
+
 
         <script src="Timer.js"></script>
 
