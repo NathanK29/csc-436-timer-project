@@ -45,6 +45,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
 
 document.getElementById('create-form').addEventListener('submit', async (e) => {
     e.preventDefault()
+	const username = document.getElementById('create-username').value.trim()
     const email = document.getElementById('create-email').value.trim()
     const password = document.getElementById('create-password').value
     const confirm = document.getElementById('create-confirm').value
@@ -55,14 +56,34 @@ document.getElementById('create-form').addEventListener('submit', async (e) => {
         errorEl.textContent = 'Passwords do not match.'
         return
     }
+	
+	const { data: existing } = await supabase
+        .from('Users')
+        .select('username')
+        .eq('username', username)
+        .maybeSingle()
+		
+	if (existing) {
+        errorEl.textContent = 'That username is already taken.'
+        return
+    }
 
-    const { error } = await supabase.auth.signUp({ email, password })
+    const { data: signUpData, error } = await supabase.auth.signUp({ email, password })
 
     if (error) {
         errorEl.textContent = error.message
         return
     }
-
+	
+	if (signUpData.user) {
+    const { error: insertErr } = await supabase.from('Users').insert({
+        user_id: signUpData.user.id,
+        username: username,
+        email: email
+    })
+		console.log('Users insert result:', insertErr || 'success')
+	}
+	
     // Supabase sends a confirmation email by default.
     // Show a message instead of redirecting immediately.
     document.getElementById('create-section').innerHTML = `

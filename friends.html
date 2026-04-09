@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Friends</title>
+        <link rel="stylesheet" href="style.css">       
+		<link rel="stylesheet" href="leaderboard.css">
+        <link rel="stylesheet" href="friends.css">      
+    </head>
+
+    <body style="display:none">
+        <script type="module">
+            import { supabase } from './supabase.js'
+            import { getMyProfile, searchByUsername, addFriend, removeFriend } from './friends.js'
+
+            // Check if user is logged in — redirect to login page if not
+            const { data: { session } } = await supabase.auth.getSession()
+            if (!session) {
+                window.location.replace('login.html')
+            } else {
+                document.body.style.display = ''  
+
+                const savedBg = localStorage.getItem('bgColor')
+                const savedTextColor = localStorage.getItem('textColor')
+                if (savedBg) document.body.style.backgroundColor = savedBg
+                if (savedTextColor) document.querySelector('.lb-back').style.color = savedTextColor
+
+                let profile = await getMyProfile(session.user.id)
+
+                const myUsername = profile.username
+                document.getElementById('my-username').textContent = myUsername
+
+                // Search functionality
+                document.getElementById('search-btn').addEventListener('click', async () => {
+                    const query = document.getElementById('search-input').value.trim()
+                    if (!query) return  // Don't search on empty input
+
+                    profile = await getMyProfile(session.user.id)
+                    const results = await searchByUsername(query)
+                    const container = document.getElementById('search-results')
+
+                    // Remove yourself from search results
+                    const filtered = results.filter(r => r.username !== myUsername)
+                    if (filtered.length === 0) {
+                        container.innerHTML = '<p class="friends-empty">No users found.</p>'
+                        return
+                    }
+
+                    container.innerHTML = filtered.map(r => {
+                        // Check if this person is already in your friends list
+                        const isFriend = profile.friends && profile.friends.includes(r.username)
+                        if (isFriend) {
+                            // Show a label instead of an add button
+                            return `<div class="friend-row">
+                                <span class="friend-name">${r.username}</span>
+                                <span class="friends-badge">Already added</span>
+                            </div>`
+                        }
+                        return `<div class="friend-row">
+                            <span class="friend-name">${r.username}</span>
+                            <button class="add-btn" data-username="${r.username}">Add Friend</button>
+                        </div>`
+                    }).join('')
+
+                    // Attach click handlers
+                    container.querySelectorAll('.add-btn').forEach(btn => {
+                        btn.addEventListener('click', async () => {
+                            const err = await addFriend(session.user.id, btn.dataset.username)
+                            if (err) {
+                                alert('Could not add friend: ' + err.message)
+                            } else {
+                                btn.replaceWith(Object.assign(document.createElement('span'), {
+                                    className: 'friends-badge',
+                                    textContent: 'Added!'
+                                }))
+                                loadFriends()
+                            }
+                        })
+                    })
+                })
+
+                //Friends list display
+                async function loadFriends() {
+                    
+                    const updated = await getMyProfile(session.user.id)
+                    const container = document.getElementById('friends-list')
+
+                    if (!updated.friends || updated.friends.length === 0) {
+                        container.innerHTML = '<p class="friends-empty">No friends yet. Search for users above!</p>'
+                        return
+                    }
+
+                    container.innerHTML = updated.friends.map(f => `
+                        <div class="friend-row">
+                            <span class="friend-name">${f}</span>
+                            <button class="remove-btn" data-username="${f}">Remove</button>
+                        </div>
+                    `).join('')
+
+                    container.querySelectorAll('.remove-btn').forEach(btn => {
+                        btn.addEventListener('click', async () => {
+                            if (confirm(`Remove ${btn.dataset.username} from friends?`)) {
+                                const err = await removeFriend(session.user.id, btn.dataset.username)
+                                if (err) alert('Error: ' + err.message)
+                                loadFriends()
+                            }
+                        })
+                    })
+                }
+
+                loadFriends()
+            }
+        </script>
+
+        <div class="lb-page">
+            <a href="index.html" class="lb-back">&larr; Back to Timer</a>
+
+            <div class="lb-card">
+                <h1>Friends</h1>
+                <p class="lb-subtitle">Your username: <strong id="my-username"></strong></p>
+
+                <h3 class="section-title">Find Friends</h3>
+                <div class="search-bar">
+                    <input type="text" id="search-input" placeholder="Search by username...">
+                    <button id="search-btn">Search</button>
+                </div>
+                <div id="search-results"></div>
+
+                <h3 class="section-title">My Friends</h3>
+                <div id="friends-list">
+                    <p class="friends-empty">Loading...</p>
+                </div>
+            </div>
+        </div>
+
+    </body>
+
+</html>

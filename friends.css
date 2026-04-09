@@ -1,0 +1,96 @@
+.section-title {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: #815538;
+    font-size: 16px;
+    margin: 28px 0 12px 0;
+    border-bottom: 1px solid #f0e8d5;
+    padding-bottom: 6px;
+}
+
+.search-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.search-bar input {
+    flex: 1;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.search-bar input:focus {
+    outline: none;
+    border-color: #1F8A8A;
+}
+
+.search-bar button {
+    background: linear-gradient(#5EC690, #3E9B69);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0px 3px 0px #2e7a52;
+    margin: 0;
+}
+
+.friend-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 8px;
+    border-bottom: 1px solid #f0e8d5;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.friend-row:last-child {
+    border-bottom: none;
+}
+
+.friend-name {
+    font-size: 15px;
+    font-weight: bold;
+    color: #333;
+}
+
+.friends-badge {
+    font-size: 12px;
+    color: #888;
+    font-style: italic;
+}
+
+.friends-empty {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 14px;
+    color: #888;
+    text-align: center;
+    margin: 12px 0;
+}
+
+.add-btn,
+.remove-btn {
+    border: none;
+    border-radius: 16px;
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 0;
+    box-shadow: none;
+}
+
+.add-btn {
+    background: linear-gradient(#5EC690, #3E9B69);
+    color: white;
+}
+
+.remove-btn {
+    background: linear-gradient(#e57373, #c0392b);
+    color: white;
+}
