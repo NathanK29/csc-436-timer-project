@@ -84,7 +84,10 @@ document.getElementById('create-form').addEventListener('submit', async (e) => {
 		console.log('Users insert result:', insertErr || 'success')
 	}
 	
-    // Supabase sends a confirmation email by default.
+	window.location.href = 'index.html'
+	
+	/*
+    // Supabase sends a confirmation email by default.	-- this was disabled to fix User tracking
     // Show a message instead of redirecting immediately.
     document.getElementById('create-section').innerHTML = `
         <h2>Check your email</h2>
@@ -99,4 +102,5 @@ document.getElementById('create-form').addEventListener('submit', async (e) => {
         document.getElementById('create-section').style.display = 'none'
         document.getElementById('login-section').style.display = 'block'
     })
+	*/
 })
