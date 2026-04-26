@@ -1,3 +1,5 @@
+import { supabase } from './supabase.js'
+
 function xpForLevel(level) {
     if (level <= 1) return 0
     return Math.floor(100 * Math.pow(level - 1, 1.5))
@@ -32,24 +34,59 @@ export function getLevelTitle(level) {
     return 'Legendary'
 }
 
-
 const XP_PER_FOCUS_MINUTE = 10
 
 let cachedTotalXp = 0
+let cachedUserId = null
 let onXpChange = null
+
+function xpStorageKey(userId) {
+    return `xp_total_${userId}`
+}
 
 export async function initXP(userId, onChange) {
     onXpChange = onChange
-    cachedTotalXp = Number(localStorage.getItem('xp_total') || 0)
+    cachedUserId = userId
+
+    const cached = Number(localStorage.getItem(xpStorageKey(userId)) || 0)
+    cachedTotalXp = cached
     notify()
+
+    const { data, error } = await supabase
+        .from('Users')
+        .select('total_xp')
+        .eq('user_id', userId)
+        .maybeSingle()
+
+    if (error) {
+        console.error('Failed to load XP:', error)
+        return
+    }
+
+    const dbXp = data?.total_xp ?? 0
+    if (dbXp !== cachedTotalXp) {
+        cachedTotalXp = dbXp
+        localStorage.setItem(xpStorageKey(userId), cachedTotalXp)
+        notify()
+    }
 }
 
 export async function awardFocusMinuteXP() {
+    if (!cachedUserId) return null
+
     const prevLevel = getLevelFromXP(cachedTotalXp)
     cachedTotalXp += XP_PER_FOCUS_MINUTE
-    localStorage.setItem('xp_total', cachedTotalXp)
     const newLevel = getLevelFromXP(cachedTotalXp)
+    localStorage.setItem(xpStorageKey(cachedUserId), cachedTotalXp)
     notify()
+
+    const { error } = await supabase
+        .from('Users')
+        .update({ total_xp: cachedTotalXp })
+        .eq('user_id', cachedUserId)
+
+    if (error) console.error('Failed to save XP:', error)
+
     return newLevel > prevLevel ? newLevel : null
 }
 
