@@ -88,3 +88,39 @@
     text-align: center;
     margin: 24px 0;
 }
+
+.lb-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.lb-tab {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 15px;
+    padding: 8px 20px;
+    border: 1px solid #d8c9a8;
+    background: white;
+    color: #815538;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.lb-tab.active {
+    background: #815538;
+    color: white;
+    border-color: #815538;
+}
+
+.lb-tab:hover:not(.active) {
+    background: #faf3e3;
+}
+
+.lb-name {
+    font-size: 15px;
+    color: #815538;
+    font-weight: bold;
+    min-width: 90px;
+}
